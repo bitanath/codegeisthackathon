@@ -1,0 +1,51 @@
+modules:
+  bitbucket:repoCodeOverviewCard:
+    - key: junebug-bitbucket-repo-overview
+      title: Security Vulnerabilities
+      function: overview
+  bitbucket:repoCodeOverviewAction:
+    - key: junebug-bitbucket-repo-action
+      title: View JIRAs created using Junebug
+      function: bulk
+  bitbucket:repoSettingsMenuPage:
+    - key: junebug-bitbucket-repo-settings
+      title: Junebug for Bitbucket
+      function: settings
+  trigger:
+    - key: junebug-bitbucket-repo-updated
+      function: commit
+      events:
+        - avi:bitbucket:updated:repository
+  consumer:
+    - key: queue-consumer
+      queue: junebug-queue
+      resolver:
+        function: consumer
+        method: event-listener
+  function:
+    - key: overview
+      handler: overview.run
+    - key: bulk
+      handler: bulk.run
+    - key: settings
+      handler: settings.run
+    - key: consumer
+      handler: queue.handler
+    - key: commit
+      handler: triggers.run
+permissions:
+  scopes:
+    - "read:repository:bitbucket"
+    - "write:repository:bitbucket"
+    - "storage:app"
+  external:
+      fetch:
+        backend:
+          - 'https://us-central1-bhaasha.cloudfunctions.net/*'
+          - 'https://*.cloudfunctions.net/*'
+          - 'https://*.hello.atlassian-dev.net/*'
+          - 'https://atlassian-dev.net/*'
+          - 'https://atlassian-dev.net'
+          - 'api.openai.com'
+app:
+  id: ari:cloud:ecosystem::app/e0ef1943-9d99-406a-b56a-b41613c602d1

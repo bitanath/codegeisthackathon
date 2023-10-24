@@ -1,0 +1,31 @@
+modules:
+  jira:adminPage:
+    - key: junebug-jira-admin-page
+      function: config
+      title: Junebug for JIRA
+      useAsConfig: true
+  webtrigger:
+    - key: junebug-jira-webtrigger-async
+      function: router
+  function:
+    - key: config
+      handler: config.run
+    - key: router
+      handler: router.run
+permissions:
+  scopes:
+    - "read:jira-work"
+    - "write:jira-work"
+    - "read:jira-user"
+    - "manage:jira-project"
+    - "manage:jira-configuration"
+    - "storage:app"
+  external:
+      fetch:
+        backend:
+          - 'https://*.hello.atlassian-dev.net/*'
+          - 'https://atlassian-dev.net/*'
+          - 'https://atlassian-dev.net'
+          - 'api.openai.com'
+app:
+  id: ari:cloud:ecosystem::app/11fdb82a-3f26-43ca-8ea0-782500549473
